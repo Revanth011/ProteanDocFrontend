@@ -1,0 +1,18 @@
+body {
+  font-family: Arial;
+}
+
+select {
+  outline: none;
+}
+
+@media print {
+  .print-date,
+  .print-time {
+    display: none;
+  }
+
+  .print-title {
+    display: none;
+  }
+}
