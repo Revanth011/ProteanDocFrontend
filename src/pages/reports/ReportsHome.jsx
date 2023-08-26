@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
+import moment from 'moment';
 
 function ReportsHome() {
     const [reports, setReports] = useState([]);
@@ -32,6 +33,19 @@ function ReportsHome() {
             }).catch(error => { console.log(error) });
     }
 
+    function deleteReport(id) {
+        console.log(id)
+        axios.patch("http://localhost:3000/deleteReport", { id: id })
+            .then((response) => {
+                return axios.get("http://localhost:3000/getAllReports");
+            }).then((response) => {
+                if (response.data.reports) {
+                    setReports(response.data.reports);
+                }
+            })
+            .catch((error) => console.log(error))
+    }
+
     return (
         <div className="report-home">
             <div className="top-bar-report">
@@ -48,7 +62,7 @@ function ReportsHome() {
                         <th>_id</th>
                         <th>Reports Created</th>
                         <th>Date Created</th>
-                        <th>Date Updated</th>
+                        <th>Last Updated</th>
                         <th>Company</th>
                         <th>Options</th>
                     </tr>
@@ -59,10 +73,10 @@ function ReportsHome() {
                                     <td>{report._id}</td>
                                     <td>{report.ReportTitle}</td>
                                     <td>
-                                        <span>{report.createdAt}</span>
+                                        <span>{moment(report.createdAt).format("lll")}</span>
                                     </td>
                                     <td>
-                                        <span>{report.updatedAt}</span>
+                                        <span>{moment(report.updatedAt).fromNow()}</span>
                                     </td>
                                     <td>
                                         <span>{report.Company}</span>
@@ -72,7 +86,7 @@ function ReportsHome() {
                                             <Button variant="contained" size="small">Edit</Button>
 
                                         </Link>
-                                        <Button variant="contained" startIcon={<DeleteIcon />} size="small">Delete</Button>
+                                        <Button variant="contained" startIcon={<DeleteIcon />} size="small" onClick={() => deleteReport(report._id)}>Delete</Button>
                                         <Button variant="contained" size="small" onClick={() => downloadReport(report._id)}>Download</Button>
                                     </td>
                                 </tr>

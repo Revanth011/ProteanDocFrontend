@@ -17,6 +17,17 @@ function Report() {
             }).catch(error => { console.log(error) });
     }, [])
 
+    function deleteObservation(id, observ) {
+        console.log(id, reportId)
+        axios.patch("http://localhost:3000/deleteObservationFromReport", { id: reportId, observation: observ, observationId: id })
+            .then((response) => {
+                if (response.data.report) {
+                    setReport(response.data.report);
+                }
+            })
+            .catch((error) => console.log(error))
+    }
+
     return (
         <div className="report">
             <div className="top-bar-report">
@@ -51,7 +62,7 @@ function Report() {
                                     </td>
                                     <td className="report-options">
                                         <Button variant="contained" size="small">Edit</Button>
-                                        <Button variant="contained" size="small" startIcon={<DeleteIcon />}>Delete</Button>
+                                        <Button variant="contained" onClick={() => deleteObservation(observation._id, observation)} size="small" startIcon={<DeleteIcon />}>Delete</Button>
                                     </td>
                                 </tr>
                             )
