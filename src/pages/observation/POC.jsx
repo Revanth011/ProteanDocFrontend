@@ -14,7 +14,7 @@ function POC({ onValueChange }) {
     formData.append("file", e.target.files[0]);
     try {
       const response = await axios.post(
-        "http://localhost:3000/upload",
+        `${process.env.REACT_APP_BACKEND_URL}/upload`,
         formData,
         {
           headers: {

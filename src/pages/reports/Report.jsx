@@ -4,28 +4,42 @@ import { Link, useParams } from "react-router-dom";
 import "./styles/Report.css";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CloseDialog from "../components/CloseDialog";
 
 function Report() {
     const [report, setReport] = useState({});
+    const [open, setOpen] = useState(false);
+    const [deleteObser, setDeleteObser] = useState({ deleteId: "", deleteObservation: {} })
 
     let { reportId } = useParams();
 
     useEffect(() => {
-        axios.post("http://localhost:3000/getReport", { id: reportId })
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/getReport`, { id: reportId })
             .then(response => {
                 setReport(response.data.report);
             }).catch(error => { console.log(error) });
     }, [])
 
-    function deleteObservation(id, observ) {
-        console.log(id, reportId)
-        axios.patch("http://localhost:3000/deleteObservationFromReport", { id: reportId, observation: observ, observationId: id })
-            .then((response) => {
-                if (response.data.report) {
-                    setReport(response.data.report);
-                }
-            })
-            .catch((error) => console.log(error))
+    function handleOpen(id, observ) {
+        setDeleteObser({ deleteId: id, deleteObservation: observ })
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const deleteObservation = () => {
+        axios.patch(`${process.env.REACT_APP_BACKEND_URL}/deleteObservationFromReport`, {
+            id: reportId,
+            observation: deleteObser.deleteObservation,
+            observationId: deleteObser.deleteId
+        }).then((response) => {
+            if (response.data.report) {
+                setReport(response.data.report);
+            }
+        }).catch((error) => console.log(error))
+        setOpen(false);
     }
 
     return (
@@ -51,7 +65,7 @@ function Report() {
                                     <td>
                                         <span>{observation?.ObservationNo}</span>
                                     </td>
-                                    <td>
+                                    <td style={{ width: "40%" }}>
                                         <span>{observation?.Vulnerability}</span>
                                     </td>
                                     <td>
@@ -62,7 +76,7 @@ function Report() {
                                     </td>
                                     <td className="report-options">
                                         <Button variant="contained" size="small">Edit</Button>
-                                        <Button variant="contained" onClick={() => deleteObservation(observation._id, observation)} size="small" startIcon={<DeleteIcon />}>Delete</Button>
+                                        <Button variant="contained" onClick={() => handleOpen(observation._id, observation)} size="small" startIcon={<DeleteIcon />}>Delete</Button>
                                     </td>
                                 </tr>
                             )
@@ -70,7 +84,9 @@ function Report() {
                     }
                 </tbody>
             </table>
+            <CloseDialog open={open} handleClose={handleClose} deleteFunc={deleteObservation} />
         </div>
     )
 }
+
 export default Report;

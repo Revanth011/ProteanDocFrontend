@@ -5,20 +5,23 @@ import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import moment from 'moment';
+import CloseDialog from "../components/CloseDialog";
 
 function ReportsHome() {
     const [reports, setReports] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [deleteReportId, setDeleteReportId] = useState("");
 
     useEffect(() => {
-        axios.get("http://localhost:3000/getAllReports").then(response => {
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/getAllReports`).then(response => {
             setReports(response.data.reports);
         }).catch(error => { console.log(error) });
     }, [])
 
     function downloadReport(id) {
-        axios.post("http://localhost:3000/getReport", { id: id })
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/getReport`, { id: id })
             .then(response => {
-                return axios.post("http://localhost:3000/download", { document: response.data.report.Observations }, {
+                return axios.post(`${process.env.REACT_APP_BACKEND_URL}/download`, { document: response.data.report.Observations }, {
                     responseType: 'blob',
 
                 })
@@ -34,17 +37,26 @@ function ReportsHome() {
     }
 
     function deleteReport(id) {
-        console.log(id)
-        axios.patch("http://localhost:3000/deleteReport", { id: id })
+        axios.patch(`${process.env.REACT_APP_BACKEND_URL}/deleteReport`, { id: deleteReportId })
             .then((response) => {
-                return axios.get("http://localhost:3000/getAllReports");
+                return axios.get(`${process.env.REACT_APP_BACKEND_URL}/getAllReports`);
             }).then((response) => {
                 if (response.data.reports) {
                     setReports(response.data.reports);
                 }
             })
             .catch((error) => console.log(error))
+        setOpen(false);
     }
+
+    function handleOpen(id) {
+        setDeleteReportId(id);
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <div className="report-home">
@@ -71,14 +83,14 @@ function ReportsHome() {
                             return (
                                 <tr key={i}>
                                     <td>{report._id}</td>
-                                    <td>{report.ReportTitle}</td>
+                                    <td style={{ width: "30%" }}>{report.ReportTitle}</td>
                                     <td>
                                         <span>{moment(report.createdAt).format("lll")}</span>
                                     </td>
                                     <td>
                                         <span>{moment(report.updatedAt).fromNow()}</span>
                                     </td>
-                                    <td>
+                                    <td style={{ width: "10%" }}>
                                         <span>{report.Company}</span>
                                     </td>
                                     <td className="report-options">
@@ -86,7 +98,7 @@ function ReportsHome() {
                                             <Button variant="contained" size="small">Edit</Button>
 
                                         </Link>
-                                        <Button variant="contained" startIcon={<DeleteIcon />} size="small" onClick={() => deleteReport(report._id)}>Delete</Button>
+                                        <Button variant="contained" startIcon={<DeleteIcon />} size="small" onClick={() => handleOpen(report._id)}>Delete</Button>
                                         <Button variant="contained" size="small" onClick={() => downloadReport(report._id)}>Download</Button>
                                     </td>
                                 </tr>
@@ -96,6 +108,7 @@ function ReportsHome() {
 
                 </tbody>
             </table>
+            <CloseDialog open={open} handleClose={handleClose} deleteFunc={deleteReport} />
         </div>
     )
 }

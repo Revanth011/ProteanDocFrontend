@@ -14,7 +14,7 @@ function ReportCreate() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:3000/createReport", report);
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/createReport`, report);
             setResponseMsg(response.data.message);
             navigate("/")
         } catch (error) {
