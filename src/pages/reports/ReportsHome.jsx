@@ -21,7 +21,7 @@ function ReportsHome() {
     function downloadReport(id) {
         axios.post(`${process.env.REACT_APP_BACKEND_URL}/getReport`, { id: id })
             .then(response => {
-                return axios.post(`${process.env.REACT_APP_BACKEND_URL}/download`, { document: response.data.report.Observations }, {
+                return axios.post(`${process.env.REACT_APP_BACKEND_URL}/download`, { document: response.data.report.Observations, id: response.data.report._id }, {
                     responseType: 'blob',
 
                 })

@@ -3,6 +3,7 @@ import ReportsHome from "./pages/reports/ReportsHome";
 import ReportCreate from "./pages/reports/ReportCreate";
 import Report from "./pages/reports/Report";
 import AddVulnerability from "./pages/vulnerability/AddVulnerability";
+import EditObservation from "./pages/observation/EditObservation";
 
 import {
   createBrowserRouter,
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/observation/create/:reportId",
     element: <FoundVulnerability />,
+  },
+  {
+    path: "/observation/edit/:reportId/:observationId",
+    element: <EditObservation />,
   },
   {
     path: "/report/create",

@@ -33,7 +33,13 @@ function Report() {
         axios.patch(`${process.env.REACT_APP_BACKEND_URL}/deleteObservationFromReport`, {
             id: reportId,
             observation: deleteObser.deleteObservation,
-            observationId: deleteObser.deleteId
+        }).then((response) => {
+            if (response.data.report) {
+                setReport(response.data.report);
+            }
+            return axios.get(`${process.env.REACT_APP_BACKEND_URL}/getReport`, {
+                id: req.body.id
+            })
         }).then((response) => {
             if (response.data.report) {
                 setReport(response.data.report);
@@ -75,8 +81,10 @@ function Report() {
                                         <span>{observation?.Severity}</span>
                                     </td>
                                     <td className="report-options">
-                                        <Button variant="contained" size="small">Edit</Button>
-                                        <Button variant="contained" onClick={() => handleOpen(observation._id, observation)} size="small" startIcon={<DeleteIcon />}>Delete</Button>
+                                        <Link to={`/observation/edit/${reportId}/${observation.ObservationId}`}>
+                                            <Button variant="contained" size="small">Edit</Button>
+                                        </Link >
+                                        <Button variant="contained" onClick={() => handleOpen(observation.ObservationId, observation)} size="small" startIcon={<DeleteIcon />}>Delete</Button>
                                     </td>
                                 </tr>
                             )
