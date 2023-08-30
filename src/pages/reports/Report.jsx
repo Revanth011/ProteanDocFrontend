@@ -37,13 +37,6 @@ function Report() {
             if (response.data.report) {
                 setReport(response.data.report);
             }
-            return axios.get(`${process.env.REACT_APP_BACKEND_URL}/getReport`, {
-                id: req.body.id
-            })
-        }).then((response) => {
-            if (response.data.report) {
-                setReport(response.data.report);
-            }
         }).catch((error) => console.log(error))
         setOpen(false);
     }

@@ -9,7 +9,7 @@ import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 const uuid = require('uuid');
 
-function FoundVulnerability() {
+function Observation() {
   const navigate = useNavigate();
 
   let { reportId } = useParams();
@@ -17,15 +17,15 @@ function FoundVulnerability() {
   const [vulnerabilities, setVulnerabilities] = useState([]);
   const [responseMsg, setResponseMsg] = useState("");
   const [observation, setObservation] = useState({
-    ObservationNo: null,
+    ObservationNo: "",
     Vulnerability: "",
     Status: "",
     Severity: "",
     Description: "",
-    Remediation: null,
-    AffectedURLs: null,
-    References: null,
-    POC: null,
+    Remediation: "",
+    AffectedURLs: [],
+    References: "",
+    POC: [],
     ObservationId: uuid.v4()
   });
 
@@ -187,4 +187,4 @@ function FoundVulnerability() {
   );
 }
 
-export default FoundVulnerability;
+export default Observation;
