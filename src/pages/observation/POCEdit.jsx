@@ -77,7 +77,7 @@ function POCEdit({ onValueChange, POC }) {
                         ></textarea>
                         <div className="">
                             <span>{item.file}</span>
-                            <input type="file" accept="image/*" id="img" onChange={(e) => handleFileChange(e)} style={{ display: "none" }} />
+                            <input type="file" accept="image/*" id="img" onChange={(e) => handleFileChange(e)} style={{ display: "none" }} required/>
                             <label htmlFor="img" style={{ margin: "0rem 1rem", border: "1px solid black", padding: "0.2rem 1rem" }} id="uploadButton" onClick={(e => setFileId(item.id))} >Upload Image</label>
                             <Button size="small" variant="outlined" onClick={() => handleRemoveField(item.id)}>Remove</Button>
                         </div>

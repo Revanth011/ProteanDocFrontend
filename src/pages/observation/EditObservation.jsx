@@ -70,7 +70,7 @@ function EditObservation() {
             }).then((response) => {
                 setResponseMsg(response.data.message);
                 if (response.data.message === "Successful") {
-                    navigate("/")
+                    navigate("/report/edit/" + reportId)
                 }
             }).catch((error) => {
                 console.log(error)
