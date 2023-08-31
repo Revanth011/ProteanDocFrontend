@@ -67,6 +67,9 @@ function ReportsHome() {
                 <Link to={"/vulnerability/create"}>
                     <Button variant="contained">Add New Vulnerability</Button>
                 </Link>
+                <Link to={"/vulnerabilities"}>
+                    <Button variant="contained">View Vulnerabilities</Button>
+                </Link>
             </div>
             <table style={{ width: "100%" }}>
                 <tbody>

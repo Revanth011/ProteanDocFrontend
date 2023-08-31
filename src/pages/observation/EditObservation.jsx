@@ -27,6 +27,8 @@ function EditObservation() {
         ObservationId: ""
     });
 
+    console.log(observation)
+
     function setVulnerabilityFunc(e, vulnera) {
         setObservation({
             ...observation,

@@ -12,6 +12,7 @@ function POC({ onValueChange }) {
     setUploadStatus("Uploading...")
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/upload`,
@@ -32,6 +33,7 @@ function POC({ onValueChange }) {
       console.log(error.message);
       setPocError(error.message);
     }
+
   };
 
   const handleTextChange = (e, id) => {
@@ -64,7 +66,6 @@ function POC({ onValueChange }) {
             cols="80"
             rows="3"
             type="text"
-            required
             value={item.text}
             onChange={(e) => handleTextChange(e, item.id)}
           ></textarea>
