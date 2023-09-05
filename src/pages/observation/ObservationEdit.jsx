@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 
-function EditObservation() {
+function ObservationEdit() {
     const navigate = useNavigate();
     let { reportId, observationId } = useParams();
     const [responseMsg, setResponseMsg] = useState("");
@@ -26,8 +26,6 @@ function EditObservation() {
         POC: [],
         ObservationId: ""
     });
-
-    console.log(observation)
 
     function setVulnerabilityFunc(e, vulnera) {
         setObservation({
@@ -90,7 +88,7 @@ function EditObservation() {
                                 <td id="t-header" colSpan="2">
                                     <div className="" style={{ display: "flex", alignItems: "center" }}>
                                         <span>Observation No.</span>
-                                        <input type="text" name="" id="" required style={{ marginLeft: "1rem" }} defaultValue={observation.ObservationNo} onChange={e => setObservation({ ...observation, ObservationNo: e.target.value })} />
+                                        <span style={{ marginLeft: "1rem" }} >{observation.ObservationNo}</span>
                                     </div>
                                 </td>
                             </tr>
@@ -184,4 +182,4 @@ function EditObservation() {
     )
 }
 
-export default EditObservation;
+export default ObservationEdit;

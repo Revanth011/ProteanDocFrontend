@@ -1,9 +1,9 @@
-import Observation from "./pages/observation/Observation";
+import ObservationAdd from "./pages/observation/ObservationAdd";
 import ReportsHome from "./pages/reports/ReportsHome";
 import ReportCreate from "./pages/reports/ReportCreate";
 import Report from "./pages/reports/Report";
 import AddVulnerability from "./pages/vulnerability/AddVulnerability";
-import EditObservation from "./pages/observation/EditObservation";
+import ObservationEdit from "./pages/observation/ObservationEdit";
 import Vulnerabilities from "./pages/vulnerability/Vulnerabilities";
 import EditVulnerability from "./pages/vulnerability/EditVulnerability";
 import Button from '@mui/material/Button';
@@ -21,11 +21,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/observation/create/:reportId",
-    element: <Observation />,
+    element: <ObservationAdd />,
   },
   {
     path: "/observation/edit/:reportId/:observationId",
-    element: <EditObservation />,
+    element: <ObservationEdit />,
   },
   {
     path: "/report/create",

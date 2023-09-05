@@ -9,7 +9,7 @@ import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 const uuid = require('uuid');
 
-function Observation() {
+function ObservationAdd() {
   const navigate = useNavigate();
 
   let { reportId } = useParams();
@@ -71,6 +71,10 @@ function Observation() {
         setVulnerabilities(response.data.vulnerabilities);
       }).catch(error => console.log(error));
 
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/getReport`, { id: reportId })
+      .then(response => {
+        setObservation({ ...observation, ObservationNo: response.data.report.Observations.length + 1 })
+      }).catch(error => { console.log(error) });
   }, []);
 
   return (
@@ -83,13 +87,7 @@ function Observation() {
                 <td id="t-header" colSpan="2">
                   <div className="" style={{ display: "flex", alignItems: "center" }}>
                     <span>Observation No.</span>
-                    <input type="text" name="" id="" required style={{ marginLeft: "1rem" }}
-                      onChange={(e) =>
-                        setObservation({
-                          ...observation,
-                          ObservationNo: parseInt(e.target.value),
-                        })
-                      } />
+                    <span style={{ marginLeft: "0.4rem" }}>{observation.ObservationNo}</span>
                   </div>
                 </td>
               </tr>
@@ -187,4 +185,4 @@ function Observation() {
   );
 }
 
-export default Observation;
+export default ObservationAdd;
