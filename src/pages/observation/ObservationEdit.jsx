@@ -13,6 +13,8 @@ function ObservationEdit() {
     let { reportId, observationId } = useParams();
     const [responseMsg, setResponseMsg] = useState("");
 
+    const user = JSON.parse(localStorage.getItem("user"));
+
     const [vulnerabilities, setVulnerabilities] = useState([]);
     const [observation, setObservation] = useState({
         ObservationNo: "",
@@ -47,13 +49,13 @@ function ObservationEdit() {
     };
 
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_BACKEND_URL}/getObservation`, { reportId, ObservationId: observationId })
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/v1/getObservation`, { reportId, ObservationId: observationId }, { headers: { 'x-access-token': `${user.accessToken}` } })
             .then(response => {
                 setObservation(response.data.observation);
 
             }).catch(error => console.log(error));
 
-        axios.get(`${process.env.REACT_APP_BACKEND_URL}/getAllVulnerabilities`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/v1/getAllVulnerabilities`, { headers: { 'x-access-token': `${user.accessToken}` } })
             .then(response => {
                 setVulnerabilities(response.data.vulnerabilities);
             }).catch(error => console.log(error));
@@ -63,11 +65,11 @@ function ObservationEdit() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (observation.Vulnerability !== "" && observation.Status !== "") {
-            axios.put(`${process.env.REACT_APP_BACKEND_URL}/updateObservation`, {
+            axios.put(`${process.env.REACT_APP_BACKEND_URL}/v1/updateObservation`, {
                 reportId: reportId,
                 observationId: observationId,
                 observation
-            }).then((response) => {
+            }, { headers: { 'x-access-token': `${user.accessToken}` } }).then((response) => {
                 setResponseMsg(response.data.message);
                 if (response.data.message === "Successful") {
                     navigate("/report/edit/" + reportId)

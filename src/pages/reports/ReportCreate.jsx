@@ -10,17 +10,18 @@ function ReportCreate() {
 
     const navigate = useNavigate();
 
+    const user = JSON.parse(localStorage.getItem("user"));
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/createReport`, report);
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/v1/createReport`, { ...report, CreatedBy: user._id, CreatedByUser: user.username }, { headers: { 'x-access-token': `${user.accessToken}` } });
             setResponseMsg(response.data.message);
+            console.log(response)
             navigate("/")
         } catch (error) {
             console.log(error);
         }
-
     }
 
     return (

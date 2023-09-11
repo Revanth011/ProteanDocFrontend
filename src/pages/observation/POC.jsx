@@ -23,7 +23,6 @@ function POC({ onValueChange }) {
           },
         }
       );
-      setUploadStatus("")
       const updatedFields = fields.map((item) =>
         item.id === id ? { ...item, file: response.data.filename } : item
       );
@@ -33,6 +32,7 @@ function POC({ onValueChange }) {
       console.log(error.message);
       setPocError(error.message);
     }
+    setUploadStatus("")
 
   };
 

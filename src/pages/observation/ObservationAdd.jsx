@@ -12,8 +12,10 @@ const uuid = require('uuid');
 function ObservationAdd() {
   const navigate = useNavigate();
 
-  let { reportId } = useParams();
+  const user = JSON.parse(localStorage.getItem("user"));
 
+  let { reportId } = useParams();
+  
   const [vulnerabilities, setVulnerabilities] = useState([]);
   const [responseMsg, setResponseMsg] = useState("");
   const [observation, setObservation] = useState({
@@ -51,10 +53,10 @@ function ObservationAdd() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (observation.Vulnerability !== "" && observation.Status !== "") {
-      axios.patch(`${process.env.REACT_APP_BACKEND_URL}/addObservation`, {
+      axios.patch(`${process.env.REACT_APP_BACKEND_URL}/v1/addObservation`, {
         _id: reportId,
         Observations: observation
-      }).then((response) => {
+      }, { headers: { 'x-access-token': `${user.accessToken}` } }).then((response) => {
         setResponseMsg(response.data.message);
         if (response.data.message === "Successful") {
           navigate("/report/edit/" + reportId)
@@ -66,12 +68,12 @@ function ObservationAdd() {
   };
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/getAllVulnerabilities`)
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/v1/getAllVulnerabilities`, { headers: { 'x-access-token': `${user.accessToken}` } })
       .then(response => {
         setVulnerabilities(response.data.vulnerabilities);
       }).catch(error => console.log(error));
 
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/getReport`, { id: reportId })
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/v1/getReport`, { id: reportId }, { headers: { 'x-access-token': `${user.accessToken}` } })
       .then(response => {
         setObservation({ ...observation, ObservationNo: response.data.report.Observations.length + 1 })
       }).catch(error => { console.log(error) });

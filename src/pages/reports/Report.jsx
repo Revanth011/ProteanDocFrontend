@@ -13,8 +13,10 @@ function Report() {
 
     let { reportId } = useParams();
 
+    const user = JSON.parse(localStorage.getItem("user"));
+
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_BACKEND_URL}/getReport`, { id: reportId })
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/v1/getReport`, { id: reportId }, { headers: { 'x-access-token': `${user.accessToken}` } })
             .then(response => {
                 setReport(response.data.report);
             }).catch(error => { console.log(error) });
@@ -30,10 +32,10 @@ function Report() {
     };
 
     const deleteObservation = () => {
-        axios.patch(`${process.env.REACT_APP_BACKEND_URL}/deleteObservationFromReport`, {
+        axios.patch(`${process.env.REACT_APP_BACKEND_URL}/v1/deleteObservationFromReport`, {
             id: reportId,
             observation: deleteObser.deleteObservation,
-        }).then((response) => {
+        }, { headers: { 'x-access-token': `${user.accessToken}` } }).then((response) => {
             if (response.data.report) {
                 setReport(response.data.report);
             }
